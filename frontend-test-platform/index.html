@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Recruitment Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+    <div class="bg-shape shape3"></div>
+
+    <div id="desktop-warning">
+        <div class="glass-card text-center">
+            <h1 class="text-gradient">Desktop Required</h1>
+            <p>This assessment can only be attempted on a desktop or laptop computer.</p>
+        </div>
+    </div>
+
+    <div id="app-container">
+        <!-- Landing Page -->
+        <div id="landing-page" class="screen active">
+            <div class="glass-card">
+                <h1 class="text-gradient mb-2">Frontend Recruitment Test</h1>
+                <p class="duration mb-4">Duration: 45 Minutes</p>
+                <div class="sections-list mb-4">
+                    <h3>Sections</h3>
+                    <ul>
+                        <li>• HTML</li>
+                        <li>• CSS</li>
+                        <li>• JavaScript Basics</li>
+                        <li>• Short Answers</li>
+                        <li>• Coding Round</li>
+                    </ul>
+                </div>
+                <form id="landing-form">
+                    <div class="input-group mb-3">
+                        <label for="candidate-name">Candidate Name</label>
+                        <input type="text" id="candidate-name" placeholder="John Doe" required>
+                    </div>
+                    <div class="input-group mb-4">
+                        <label for="candidate-email">Candidate Email</label>
+                        <input type="email" id="candidate-email" placeholder="john@example.com" required>
+                    </div>
+                    <button type="submit" class="btn primary full-width">Continue to Permissions</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Permissions Page -->
+        <div id="permissions-page" class="screen hidden">
+            <div class="glass-card">
+                <h1 class="mb-4">System Verification</h1>
+                <div class="permission-item mb-3" id="perm-camera">
+                    <span>Camera Permission</span>
+                    <span class="status pending">Pending</span>
+                </div>
+                <div class="permission-item mb-3" id="perm-mic">
+                    <span>Microphone Permission</span>
+                    <span class="status pending">Pending</span>
+                </div>
+                <div class="permission-item mb-4" id="perm-fullscreen">
+                    <span>Fullscreen Access</span>
+                    <span class="status pending">Pending</span>
+                </div>
+                
+                <div id="perm-error" class="error-box hidden mb-3">
+                    <p><strong>Permission Required</strong></p>
+                    <p>This assessment requires Camera, Microphone and Fullscreen. Please allow all permissions.</p>
+                </div>
+                <button id="btn-request-perms" class="btn primary full-width">Request Permissions</button>
+                <button id="btn-retry-perms" class="btn warning full-width hidden mt-2">Retry</button>
+                <button id="btn-continue-rules" class="btn success full-width hidden mt-2">Continue</button>
+            </div>
+        </div>
+
+        <!-- Rules Page -->
+        <div id="rules-page" class="screen hidden">
+            <div class="glass-card">
+                <h1 class="mb-4 text-gradient">Exam Rules</h1>
+                <p class="mb-3">You must agree to:</p>
+                <ul class="rules-list mb-4">
+                    <li>✓ Stay on this tab.</li>
+                    <li>✓ Stay in fullscreen.</li>
+                    <li>✓ No mobile devices.</li>
+                    <li>✓ No AI assistants.</li>
+                    <li>✓ No copy/paste.</li>
+                    <li>✓ No browser developer tools.</li>
+                    <li>✓ No multiple browser windows.</li>
+                    <li>✓ Webcam must remain enabled.</li>
+                    <li>✓ Microphone must remain enabled.</li>
+                    <li>✓ Internet connection should remain stable.</li>
+                </ul>
+                
+                <div class="error-box mb-4" style="background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger);">
+                    <p class="text-danger mb-2" style="font-size: 1.1rem;"><strong>⚠️ CRITICAL REQUIREMENT</strong></p>
+                    <p class="text-sm" style="color: #f8fafc; line-height: 1.5;">At the end of the exam, you MUST download the recorded video of your session and send it to Shaurya. <strong>Without the video, your submission will NOT be accepted!</strong></p>
+                </div>
+
+                <div class="checkbox-group mb-4">
+                    <input type="checkbox" id="agree-rules">
+                    <label for="agree-rules">I agree to all rules and understand the video requirement.</label>
+                </div>
+                <button id="btn-start-exam" class="btn primary full-width" disabled>Start Exam</button>
+            </div>
+        </div>
+
+        <!-- Exam Page -->
+        <div id="exam-page" class="screen hidden">
+            <div class="exam-header glass-panel">
+                <div class="brand">Frontend Test</div>
+                <div class="timer" id="timer-display">45:00</div>
+                <div class="violation-box">Violations: <span id="violation-count">0</span>/3</div>
+                <button id="btn-finish-early" class="btn danger small">Submit Exam</button>
+            </div>
+            
+            <div class="exam-body">
+                <div class="sidebar glass-panel">
+                    <h3>Questions</h3>
+                    <div id="question-palette" class="palette-grid"></div>
+                    <div class="palette-legend mt-4">
+                        <div class="legend-item"><span class="dot current"></span> Current</div>
+                        <div class="legend-item"><span class="dot answered"></span> Answered</div>
+                        <div class="legend-item"><span class="dot not-answered"></span> Not Answered</div>
+                        <div class="legend-item"><span class="dot review"></span> Review Later</div>
+                    </div>
+                </div>
+
+                <div class="main-content glass-panel" id="question-container">
+                    <div class="progress-wrapper mb-4">
+                        <div class="progress-text" id="progress-text">Question 1 / 30</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="progress-bar"></div>
+                        </div>
+                    </div>
+
+                    <div id="question-content" class="mb-4"></div>
+
+                    <div class="action-bar mt-4">
+                        <button id="btn-prev" class="btn secondary">Previous</button>
+                        <div class="center-actions">
+                            <label class="checkbox-btn">
+                                <input type="checkbox" id="mark-review"> Mark for Review
+                            </label>
+                            <button id="btn-save" class="btn primary">Save Answer</button>
+                        </div>
+                        <button id="btn-next" class="btn primary">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Page -->
+        <div id="review-page" class="screen hidden">
+            <div class="glass-card wide">
+                <h1 class="mb-4">Review Your Answers</h1>
+                <div id="review-grid" class="review-grid mb-4"></div>
+                <div class="flex-center gap-3">
+                    <button id="btn-back-to-exam" class="btn secondary">Back to Exam</button>
+                    <button id="btn-final-submit" class="btn success">Confirm Submission</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blocked Page -->
+        <div id="blocked-page" class="screen hidden">
+            <div class="glass-card text-center" style="max-height: 90vh; overflow-y: auto;">
+                <h1 class="text-danger mb-3">Access Denied</h1>
+                <p class="mb-4">You have already submitted this assessment.</p>
+                <p>Multiple attempts are not permitted.</p>
+                
+                <div id="blocked-recording-section" class="mt-4 p-3 hidden" style="border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p class="text-sm mb-2">Here is your recorded session:</p>
+                    <video id="blocked-video-preview" controls class="mb-3" style="width: 100%; border-radius: 8px; background: #000;"></video>
+                    <br>
+                    <a id="btn-blocked-download" class="btn primary inline-block" download="session-recording.webm">Download Video</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Page -->
+        <div id="final-page" class="screen hidden">
+            <div class="glass-card text-center" style="max-height: 90vh; overflow-y: auto;">
+                <h1 class="text-gradient mb-3">Assessment Submitted Successfully</h1>
+                <p class="mb-4">Thank you for completing the assessment.</p>
+                <p class="mb-4">Your responses have been saved.</p>
+                <p class="mb-4">Final review will be done by Shaurya.</p>
+                <div id="recording-section" class="mt-4 p-3 hidden" style="border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p class="text-sm mb-2">Your proctoring session was recorded.</p>
+                    <video id="final-video-preview" controls class="mb-3" style="width: 100%; border-radius: 8px; background: #000;"></video>
+                    <br>
+                    <a id="btn-download-recording" class="btn primary inline-block" download="session-recording.webm">Download Video</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <video id="hidden-video" class="hidden" muted autoplay playsinline></video>
+
+    <div id="warning-modal" class="modal hidden">
+        <div class="modal-content glass-card">
+            <h2 class="text-danger mb-2">Warning!</h2>
+            <p id="warning-text" class="mb-4">Suspicious activity detected.</p>
+            <button id="btn-dismiss-warning" class="btn primary">I Understand</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
